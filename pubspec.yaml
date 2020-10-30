@@ -1,4 +1,4 @@
-name: attendence
+name: attendance
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_secure_storage: ^3.3.5
 
 
   # The following adds the Cupertino Icons font to your application.
