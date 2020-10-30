@@ -13,19 +13,21 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   String key = "login_info";
+  String loginInfo;
+
+  Future<void> loadFromStorage() async{
+    final storage = FlutterSecureStorage();
+    loginInfo = await storage.read(key: key);
+    print(loginInfo);
+  }
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-
-    final storage = FlutterSecureStorage();
-    final String login_info = await storage.read(key: key);
-    print(login_info);
-
     Timer(
       Duration(seconds: 3),
       () {
-        if (login_info == null){
+        if (loginInfo == null){
           Navigator.pushNamed(
             context,
             LoginScreen.ID,
