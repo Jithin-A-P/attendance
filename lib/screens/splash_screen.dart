@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:attendance/constants.dart';
 import 'package:attendance/screens/home_screen.dart';
 import 'package:attendance/screens/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
