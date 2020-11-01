@@ -17,8 +17,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> loadFromStorage() async{
     final storage = FlutterSecureStorage();
-    loginInfo = await storage.read(key: LOGIN_INFO).toString();
-    print(loginInfo);
+    loginInfo = await storage.read(key: LOGIN_INFO);
+    print("SplashScreen :: loginInfo :: value :: $loginInfo");
   }
 
   @override
@@ -29,12 +29,12 @@ class _SplashScreenState extends State<SplashScreen> {
       Duration(seconds: 3),
       () {
         if (loginInfo == null){
-          Navigator.pushNamed(
+          Navigator.pushReplacementNamed(
             context,
             LoginScreen.ID,
           );
         } else {
-          Navigator.pushNamed(
+          Navigator.pushReplacementNamed(
             context,
             HomeScreen.ID,
           );
