@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'package:attendance/constants.dart';
-import 'package:attendance/screens/home_screen.dart';
 import 'package:attendance/screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String ID = 'SplashScreen';
@@ -15,16 +12,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   String loginInfo;
 
-  Future<void> loadFromStorage() async {
-    final storage = FlutterSecureStorage();
-    loginInfo = await storage.read(key: LOGIN_INFO);
-    print("SplashScreen :: loginInfo :: value :: $loginInfo");
-  }
-
   @override
   void initState() {
     super.initState();
-    loadFromStorage();
     Timer(
       Duration(seconds: 3),
       () {
@@ -33,12 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
             context,
             LoginScreen.ID,
           );
-        } else {
-          Navigator.pushReplacementNamed(
-            context,
-            HomeScreen.ID,
-          );
-        }
+        } else {}
       },
     );
   }

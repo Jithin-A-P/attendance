@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-const String LOGIN_INFO = "LOGIN_INFO";
+const String LOGIN_INFO = 'LOGIN_INFO';
+const String EMAIL = 'EMIAL';
+const String PASSWORD = 'PASSWORD';
 
 const kTextFieldDecoration = InputDecoration(
   hintText: 'hint',

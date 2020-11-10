@@ -3,7 +3,6 @@ import 'package:attendance/constants.dart';
 import 'package:attendance/screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
@@ -15,7 +14,6 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  FlutterSecureStorage storage;
   String email;
   String password;
   String confirmPassword;
@@ -27,7 +25,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   void initState() {
     Firebase.initializeApp();
-    storage = FlutterSecureStorage();
     super.initState();
   }
 
@@ -100,8 +97,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   });
                   if (password == confirmPassword) {
                     try {
-                      final _newuser =
-                          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      final _newuser = await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
                         email: email,
                         password: password,
                       );

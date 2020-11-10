@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 
 class SubjectStream extends StatelessWidget {
   final _firestore = FirebaseFirestore.instance;
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('subjects').snapshots(),
+      stream: _firestore
+          .collection('subjects')
+          .where("username", isEqualTo: user.email)
+          .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final subjects = snapshot.data.docs;
@@ -18,24 +22,28 @@ class SubjectStream extends StatelessWidget {
             final subjectTitle = subject.data()['name'];
             final attendedClasses = subject.data()['attended-class'];
             final totalClasses = subject.data()['total-class'];
-            final messageBubble = SubjectTile(
+            final subjectTile = SubjectTile(
               title: subjectTitle,
               attendedClasses: attendedClasses,
               totalClasses: totalClasses,
             );
-            subjectTiles.add(messageBubble);
+            subjectTiles.add(subjectTile);
           }
-          return Expanded(
-            child: ListView(
+          if (subjectTiles.length > 0) {
+            return ListView(
               padding: EdgeInsets.symmetric(
                 horizontal: 10.0,
                 vertical: 20.0,
               ),
               children: subjectTiles,
-            ),
-          );
+            );
+          }
         }
-        return null;
+        return Center(
+          child: Text(
+            'Looks like you haven\'t added any subjects\nClick on \'+\' to add subjects',
+          ),
+        );
       },
     );
   }

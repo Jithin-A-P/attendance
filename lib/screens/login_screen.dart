@@ -3,7 +3,6 @@ import 'package:attendance/constants.dart';
 import 'package:attendance/screens/home_screen.dart';
 import 'package:attendance/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -15,7 +14,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  FlutterSecureStorage storage;
   String email;
   String password;
   bool showSpinner = false;
@@ -23,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     Firebase.initializeApp();
-    storage = FlutterSecureStorage();
     super.initState();
   }
 
@@ -74,13 +71,13 @@ class _LoginScreenState extends State<LoginScreen> {
               RoundedButton(
                 title: 'Log In',
                 color: Colors.black87,
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     showSpinner = true;
                   });
                   try {
                     final _user =
-                    FirebaseAuth.instance.signInWithEmailAndPassword(
+                        FirebaseAuth.instance.signInWithEmailAndPassword(
                       email: email,
                       password: password,
                     );
@@ -100,27 +97,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Not a user?',
-                    style: TextStyle(
-                      color: Colors.black54,
-                    ),
-                  ),
-                  FlatButton(
-                    child: Text(
-                      'Register',
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Not a user?',
                       style: TextStyle(
-                        color: Colors.blue,
+                        color: Colors.black54,
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, RegistrationScreen.ID);
-                    },
-                  ),
-                ]
-              ),
+                    FlatButton(
+                      child: Text(
+                        'Register',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, RegistrationScreen.ID);
+                      },
+                    ),
+                  ]),
             ],
           ),
         ),
