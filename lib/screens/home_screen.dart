@@ -1,3 +1,4 @@
+import 'package:attendance/components/add_subject_popup.dart';
 import 'package:attendance/components/subject_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AddSubPopup(),
+          );
           try {
             firestoreInstance.collection('subjects').doc(user.uid).set(
               {

@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       password: password,
                     );
                     if (_user != null) {
-                      Navigator.pushNamed(context, HomeScreen.ID);
+                      Navigator.pushReplacementNamed(context, HomeScreen.ID);
                     }
                     setState(() {
                       showSpinner = false;
@@ -113,8 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushReplacementNamed(
-                            context, RegistrationScreen.ID);
+                        Navigator.pushNamed(context, RegistrationScreen.ID);
                       },
                     ),
                   ]),
