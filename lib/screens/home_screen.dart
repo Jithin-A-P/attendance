@@ -24,12 +24,21 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          firestoreInstance.collection('subjects').doc(user.uid).set({
-            'username': user.email,
-            'name': 'Main',
-            'attended-class': 0,
-            'total-class': 0,
-          });
+          try {
+            firestoreInstance.collection('subjects').doc(user.uid).set(
+              {
+                'subjects': {
+                  'Graphics': {
+                    'total-class': 50,
+                    'attended-class': 47,
+                  }
+                }
+              },
+              SetOptions(merge: true),
+            );
+          } catch (e) {
+            print(e);
+          }
         },
       ),
     );

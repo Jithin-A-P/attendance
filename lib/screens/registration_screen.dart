@@ -1,6 +1,7 @@
 import 'package:attendance/components/rounded_button.dart';
 import 'package:attendance/constants.dart';
 import 'package:attendance/screens/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -103,7 +104,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         password: password,
                       );
                       if (_newuser != null) {
-                        Navigator.pushNamed(context, HomeScreen.ID);
+                        Navigator.pushReplacementNamed(context, HomeScreen.ID);
                       }
                       setState(() {
                         showSpinner = false;
