@@ -1,9 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AddSubPopup extends StatelessWidget {
+  final _user = FirebaseAuth.instance.currentUser;
+  final _firestore = FirebaseFirestore.instance;
+
+  void addSubject(String subject) {
+    try {
+      _firestore.collection('subjects').doc(_user.uid).set(
+        {
+          'subjects': {
+            subject: {
+              'total-class': 0,
+              'attended-class': 0,
+            }
+          }
+        },
+        SetOptions(merge: true),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _padding = 16.0;
+    String _subName = 'Subject';
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_padding),
@@ -31,7 +55,7 @@ class AddSubPopup extends StatelessWidget {
           ],
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Padding(
               padding: EdgeInsets.only(top: _padding),
@@ -61,19 +85,21 @@ class AddSubPopup extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(24.0)),
                   ),
                 ),
+                onChanged: (value) {
+                  _subName = value;
+                },
               ),
             ),
-            FlatButton(
-              highlightColor: Colors.white,
-              onPressed: () {},
-              child: Container(
-                height: 54.0,
-                width: 54.0,
-                color: Colors.blueGrey,
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
+            RaisedButton(
+              onPressed: () {
+                addSubject(_subName);
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.add, color: Colors.white),
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.blue),
               ),
             )
           ],

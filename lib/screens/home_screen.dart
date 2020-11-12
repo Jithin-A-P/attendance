@@ -17,11 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Expanded(
-          child: SubjectStream(),
-        ),
-      ),
+      body: SubjectStream(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
@@ -29,21 +25,21 @@ class _HomeScreenState extends State<HomeScreen> {
             context: context,
             builder: (BuildContext context) => AddSubPopup(),
           );
-          try {
-            firestoreInstance.collection('subjects').doc(user.uid).set(
-              {
-                'subjects': {
-                  'Graphics': {
-                    'total-class': 50,
-                    'attended-class': 47,
-                  }
-                }
-              },
-              SetOptions(merge: true),
-            );
-          } catch (e) {
-            print(e);
-          }
+          // try {
+          //   firestoreInstance.collection('subjects').doc(user.uid).set(
+          //     {
+          //       'subjects': {
+          //         'Graphics': {
+          //           'total-class': 50,
+          //           'attended-class': 47,
+          //         }
+          //       }
+          //     },
+          //     SetOptions(merge: true),
+          //   );
+          // } catch (e) {
+          //   print(e);
+          // }
         },
       ),
     );
