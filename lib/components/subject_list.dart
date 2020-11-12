@@ -9,14 +9,18 @@ class SubjectStream extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final snapshots = _firestore.collection('subjects').doc(_user.uid).snapshots();
     return StreamBuilder(
-      stream: _firestore.collection('subjects').doc(_user.uid).snapshots(),
+      stream: snapshots,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Text(
-              'Looks like you haven\'t added any subjects\nClick on \'+\' to add subjects');
+        var subjectData = snapshot.data.data();
+        if (subjectData == null) {
+          return Center(
+            child: Text(
+                'Looks like you haven\'t added any subjects\nClick on \'+\' to add subjects'),
+          );
         }
-        final userDocument = Map<String, dynamic>.from(snapshot.data.data()['subjects']);
+        final userDocument = Map<String, dynamic>.from(subjectData['subjects']);
         List<SubjectTile> subjectTiles = [];
         for (var subject in userDocument.entries) {
           final subjectTile = SubjectTile(
@@ -35,7 +39,8 @@ class SubjectStream extends StatelessWidget {
             children: subjectTiles,
           );
         }
-        return Text(userDocument['subjects'].toString());
+        return Text(
+            'Looks like you haven\'t added any subjects\nClick on \'+\' to add subjects');
       },
     );
   }
