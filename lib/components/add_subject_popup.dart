@@ -1,3 +1,4 @@
+import 'package:attendance/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,14 +7,14 @@ class AddSubPopup extends StatelessWidget {
   final _user = FirebaseAuth.instance.currentUser;
   final _firestore = FirebaseFirestore.instance;
 
-  void addSubject(String subject) {
+  void addSubject(String subject, int totalClasses, int attendedClasses) {
     try {
       _firestore.collection('subjects').doc(_user.uid).set(
         {
           'subjects': {
             subject: {
-              'total-class': 0,
-              'attended-class': 0,
+              'total-class': totalClasses,
+              'attended-class': attendedClasses,
             }
           }
         },
@@ -28,6 +29,8 @@ class AddSubPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     final _padding = 16.0;
     String _subName = 'Subject';
+    int _totalClasses = 0;
+    int _attendedClasses = 0;
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_padding),
@@ -35,7 +38,7 @@ class AddSubPopup extends StatelessWidget {
       elevation: 5.0,
       backgroundColor: Colors.transparent,
       child: Container(
-        height: 250.0,
+        height: 340.0,
         padding: EdgeInsets.only(
           top: _padding,
           bottom: _padding,
@@ -55,7 +58,6 @@ class AddSubPopup extends StatelessWidget {
           ],
         ),
         child: Column(
-          //mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Padding(
               padding: EdgeInsets.only(top: _padding),
@@ -68,31 +70,50 @@ class AddSubPopup extends StatelessWidget {
               padding: EdgeInsets.all(_padding),
               child: TextField(
                 textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  hintText: 'Name',
-                  hintStyle: TextStyle(
-                    fontSize: 18.0,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black54, width: 1.0),
-                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black54, width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                ),
+                decoration: popupInputDecor.copyWith(hintText: 'Name'),
                 onChanged: (value) {
                   _subName = value;
+                  print(_totalClasses);
                 },
               ),
             ),
+            Text(
+              'Classes so far :',
+              style: TextStyle(fontSize: 16.0),
+            ),
+            Row(
+              children: [
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      decoration: popupInputDecor.copyWith(hintText: 'Total'),
+                      onChanged: (value) {
+                        _totalClasses = int.parse(value);
+                      },
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        decoration:
+                            popupInputDecor.copyWith(hintText: 'Attended'),
+                        onChanged: (value) {
+                          _attendedClasses = int.parse(value);
+                        }),
+                  ),
+                ),
+              ],
+            ),
             RaisedButton(
               onPressed: () {
-                addSubject(_subName);
+                addSubject(_subName, _totalClasses, _attendedClasses);
                 Navigator.pop(context);
               },
               child: Icon(Icons.add, color: Colors.white),
