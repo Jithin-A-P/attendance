@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class SubjectTile extends StatelessWidget {
   final String title;
@@ -13,6 +16,15 @@ class SubjectTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _attendancePercent = (attendedClasses / totalClasses);
+    var _progressColor;
+    if (_attendancePercent > 0.9) {
+      _progressColor = Colors.green;
+    } else if (_attendancePercent > 0.75) {
+      _progressColor = Colors.yellow;
+    } else {
+      _progressColor = Colors.red;
+    }
     return Container(
       margin: EdgeInsets.all(8.0),
       height: 60.0,
@@ -32,18 +44,35 @@ class SubjectTile extends StatelessWidget {
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 25.0,
-          top: 15.0,
-        ),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              left: 15.0,
+            ),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
-        ),
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: CircularPercentIndicator(
+              radius: 45.0,
+              lineWidth: 4.0,
+              percent: _attendancePercent,
+              center: Text(
+                (_attendancePercent * 100).toStringAsFixed(1) + '%',
+                style: TextStyle(fontSize: 10),
+              ),
+              progressColor: _progressColor,
+            ),
+          ),
+        ],
       ),
     );
   }
