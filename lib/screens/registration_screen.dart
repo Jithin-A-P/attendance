@@ -42,7 +42,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
-                height: 150.0,
+                alignment: Alignment.center,
+                height: 200.0,
+                padding: EdgeInsets.only(top: 150),
+                child: Text(
+                  'ATTENDANCE',
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 38,
+                    letterSpacing: 10.0,
+                  ),
+                ),
               ),
               SizedBox(
                 height: 48.0,
