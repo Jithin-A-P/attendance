@@ -1,5 +1,6 @@
 import 'package:attendance/components/add_subject_popup.dart';
 import 'package:attendance/components/subject_list.dart';
+import 'package:attendance/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,7 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _select(String choice) {
     if (choice == choices[0]) {
-      // TODO : Implment logout
+      Navigator.pushReplacementNamed(context, LoginScreen.ID);
+      FirebaseAuth.instance.signOut();
     }
   }
 
