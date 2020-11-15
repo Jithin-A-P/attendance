@@ -32,19 +32,11 @@ class AddSubPopup extends StatelessWidget {
     int _totalClasses = 0;
     int _attendedClasses = 0;
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(_padding),
-      ),
       elevation: 5.0,
       backgroundColor: Colors.transparent,
       child: Container(
         height: 340.0,
-        padding: EdgeInsets.only(
-          top: _padding,
-          bottom: _padding,
-          left: _padding,
-          right: _padding,
-        ),
+        padding: EdgeInsets.all(_padding),
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.rectangle,
