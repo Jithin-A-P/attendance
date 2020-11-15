@@ -1,5 +1,5 @@
-import 'package:attendance/components/rounded_button.dart';
 import 'package:attendance/components/rounded_button_small.dart';
+import 'package:attendance/components/sub_details_popup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +61,7 @@ class _SubjectTileState extends State<SubjectTile> {
 
   @override
   Widget build(BuildContext context) {
-    final _attendancePercent = (attendedClasses / totalClasses);
+    final _attendancePercent = attendedClasses / totalClasses;
     var _progressColor;
     if (_attendancePercent > 0.9) {
       _progressColor = Colors.green;
@@ -120,15 +120,27 @@ class _SubjectTileState extends State<SubjectTile> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(right: 16.0),
-                  child: CircularPercentIndicator(
-                    radius: 45.0,
-                    lineWidth: 4.0,
-                    percent: _attendancePercent,
-                    center: Text(
-                      (_attendancePercent * 100).toStringAsFixed(1) + '%',
-                      style: TextStyle(fontSize: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => SubDetailsPopup(
+                          title: title,
+                          totalClasses: totalClasses,
+                          attendedClasses: attendedClasses,
+                        ),
+                      );
+                    },
+                    child: CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      percent: _attendancePercent,
+                      center: Text(
+                        (_attendancePercent * 100).toStringAsFixed(1) + '%',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                      progressColor: _progressColor,
                     ),
-                    progressColor: _progressColor,
                   ),
                 ),
               ],
