@@ -1,5 +1,7 @@
 import 'package:attendance/components/rounded_button.dart';
 import 'package:attendance/components/rounded_button_small.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -24,8 +26,10 @@ class SubjectTile extends StatefulWidget {
 
 class _SubjectTileState extends State<SubjectTile> {
   final String title;
-  final int totalClasses;
-  final int attendedClasses;
+  int totalClasses;
+  int attendedClasses;
+  final _firestore = FirebaseFirestore.instance;
+  final _user = FirebaseAuth.instance.currentUser;
   double _animatedHeight = 60.0;
   double _innerAnimatedHeight = 0.0;
 
@@ -34,6 +38,26 @@ class _SubjectTileState extends State<SubjectTile> {
     this.attendedClasses,
     this.totalClasses,
   });
+
+  void addSubject(bool present) {
+    if (present) attendedClasses += 1;
+    totalClasses += 1;
+    try {
+      _firestore.collection('subjects').doc(_user.uid).set(
+        {
+          'subjects': {
+            title: {
+              'total-class': totalClasses,
+              'attended-class': attendedClasses,
+            }
+          }
+        },
+        SetOptions(merge: true),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,13 +165,17 @@ class _SubjectTileState extends State<SubjectTile> {
                       children: [
                         SmallRoundedButton(
                           title: 'Absent',
-                          onPressed: () {},
+                          onPressed: () {
+                            addSubject(false);
+                          },
                           color: Colors.red,
                         ),
                         SmallRoundedButton(
                           title: 'Present',
                           color: Colors.green,
-                          onPressed: () {},
+                          onPressed: () {
+                            addSubject(true);
+                          },
                         ),
                       ],
                     ),
