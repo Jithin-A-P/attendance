@@ -1,9 +1,11 @@
 import 'package:attendance/components/add_subject_popup.dart';
 import 'package:attendance/components/subject_list.dart';
+import 'package:attendance/constants.dart';
 import 'package:attendance/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const List<String> choices = <String>[
   "Logout",
@@ -19,10 +21,17 @@ class _HomeScreenState extends State<HomeScreen> {
   var user = FirebaseAuth.instance.currentUser;
   var firestoreInstance = FirebaseFirestore.instance;
 
+  void logout() async {
+    FirebaseAuth.instance.signOut();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(EMAIL);
+    prefs.remove(PASSWORD);
+    Navigator.pushReplacementNamed(context, LoginScreen.ID);
+  }
+
   void _select(String choice) {
     if (choice == choices[0]) {
-      Navigator.pushReplacementNamed(context, LoginScreen.ID);
-      FirebaseAuth.instance.signOut();
+      logout();
     }
   }
 

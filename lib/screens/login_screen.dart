@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String ID = 'LoginScreen';
@@ -16,7 +17,14 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String email;
   String password;
+  var prefs;
   bool showSpinner = false;
+
+  void saveLoginInfo() async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.setString(EMAIL, email);
+    prefs.setString(PASSWORD, password);
+  }
 
   @override
   void initState() {
@@ -92,6 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       password: password,
                     );
                     if (_user != null) {
+                      saveLoginInfo();
+                      print(prefs.getString(EMAIL));
                       Navigator.pushReplacementNamed(context, HomeScreen.ID);
                     }
                     setState(() {

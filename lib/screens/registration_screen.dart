@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String ID = 'RegistrationScreen';
@@ -21,6 +22,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _passwordController = TextEditingController();
   final _confirmController = TextEditingController();
+
+  void saveLoginInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(EMAIL, email);
+    prefs.setString(PASSWORD, password);
+  }
 
   @override
   void initState() {
@@ -113,6 +120,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         password: password,
                       );
                       if (_newuser != null) {
+                        saveLoginInfo();
                         Navigator.pushReplacementNamed(context, HomeScreen.ID);
                       }
                       setState(() {
