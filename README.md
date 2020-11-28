@@ -1,4 +1,4 @@
 # attendence
 
-A new Flutter project.
+An app to monitor the attendance percentage of subjects
 
